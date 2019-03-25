@@ -2,11 +2,12 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const graphqlHttp = require("express-graphql");
 const { buildSchema } = require("graphql");
+const mongoose = require("mongoose");
+
+const Event = require("./Models/event.js");
 
 const app = express();
 app.use(bodyParser.json());
-
-const events = [];
 
 app.use(
   "/graphql",
@@ -43,24 +44,50 @@ app.use(
     `),
     rootValue: {
       events: () => {
-        return events;
+        return Event.find()
+          .then(events => {
+            return events.map(event => {
+              return { ...event._doc };
+            });
+          })
+          .catch(err => {
+            console.log(err);
+          });
       },
       createEvents: args => {
-        const event = {
-          _id: Math.random().toString(),
+        const event = new Event({
           title: args.eventInput.title,
           description: args.eventInput.description,
           price: +args.eventInput.price,
-          date: args.eventInput.date
-        };
+          date: new Date(args.eventInput.date)
+        });
 
-        events.push(event);
-        return event;
+        return event
+          .save()
+          .then(result => {
+            console.log("Insertion Successful " + result);
+            return { ...result._doc };
+          })
+          .catch(err => {
+            console.log(err);
+          });
       }
     },
     graphiql: true
   })
 );
+
+mongoose
+  .connect(
+    "mongodb+srv://admin:007@graphql-cluster-v8me6.mongodb.net/graphql-dev?retryWrites=true",
+    { useNewUrlParser: true }
+  )
+  .then(() => {
+    console.log("Connection Successful");
+  })
+  .catch(err => {
+    console.log(err);
+  });
 
 const port = process.env.port || 3000;
 
