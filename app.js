@@ -5,10 +5,13 @@ const mongoose = require("mongoose");
 
 const graphQlSchema = require("./GraphQL/Schema/index.js");
 const graphQlResolver = require("./GraphQL/Resolver/index.js");
+const isAuth = require("./middleware/is-auth");
 
 const app = express();
 
 app.use(bodyParser.json());
+
+app.use(isAuth);
 
 app.use(
   "/graphql",

@@ -15,13 +15,17 @@ module.exports = {
     }
   },
 
-  createEvents: async args => {
+  createEvents: async (args, req) => {
+    if (!req.isAuth) {
+      throw new Error("Unauthenticated!!!");
+    }
+
     const event = new Event({
       title: args.eventInput.title,
       description: args.eventInput.description,
       price: +args.eventInput.price,
       date: dateToString(args.eventInput.date),
-      creator: "5c98a0b0a853792680fb9842"
+      creator: req.userId
     });
 
     let createdEvent;
@@ -29,7 +33,7 @@ module.exports = {
     try {
       const result = await event.save();
       createdEvent = transformEvent(result);
-      const user = await User.findById("5c98a0b0a853792680fb9842");
+      const user = await User.findById(req.userId);
       // console.log("Insertion Successful " + result);
       // return { ...result._doc };
 
