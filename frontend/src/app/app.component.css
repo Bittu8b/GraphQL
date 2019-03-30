@@ -1,0 +1,8 @@
+a:active,
+a.active {
+  background-color: crimson;
+}
+
+a:hover {
+  background-color: rgba(219, 83, 110, 0.8);
+}
