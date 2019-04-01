@@ -1,5 +1,7 @@
 import { Component, OnInit, Input } from "@angular/core";
 import { AuthService } from "./Service/auth.service";
+import { Router } from "@angular/router";
+import { NavbarService } from "./Service/navbar.service";
 
 @Component({
   selector: "app-root",
@@ -9,29 +11,24 @@ import { AuthService } from "./Service/auth.service";
 export class AppComponent implements OnInit {
   isAuth: boolean = false;
 
+  links: Array<{ text: string; path: string }>;
+  isLoggedIn = false;
+
   title = "frontend";
 
-  constructor(private authService: AuthService) {}
+  constructor(private router: Router, private navbarService: NavbarService) {}
 
   ngOnInit(): void {
-    setTimeout(() => {
-      this.checkStatus();
-    }, 1000);
-  }
+    this.links = this.navbarService.getLinks();
+    this.navbarService
+      .getLoginStatus()
+      .subscribe(status => (this.isLoggedIn = status));
 
-  checkStatus() {
-    if (this.authService.headerStatus()) {
-      this.isAuth = true;
-      console.log(this.isAuth);
-    } else {
-      console.log(this.authService.headerStatus());
-
-      this.isAuth = false;
-    }
+    console.log(this.isLoggedIn);
   }
 
   logout() {
-    this.authService.logout();
-    this.isAuth = false;
+    this.navbarService.updateLoginStatus(false);
+    this.router.navigate(["auth"]);
   }
 }
