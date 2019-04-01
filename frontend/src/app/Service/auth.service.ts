@@ -5,6 +5,8 @@ import { Router } from "@angular/router";
   providedIn: "root"
 })
 export class AuthService {
+  isLoggedIn = false;
+
   constructor(private _router: Router) {}
 
   clear(): void {
@@ -20,12 +22,18 @@ export class AuthService {
   }
 
   login(token) {
+    this.isLoggedIn = true;
     localStorage.setItem("token", token);
     this._router.navigate(["/events"]);
   }
 
   logout(): void {
+    this.isLoggedIn = false;
     this.clear();
     this._router.navigate(["/auth"]);
+  }
+
+  headerStatus(): boolean {
+    return this.isLoggedIn;
   }
 }

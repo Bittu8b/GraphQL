@@ -1,6 +1,7 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, Input, ViewChild, ElementRef } from "@angular/core";
 import { ProjectService } from "src/app/Service/project.service";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
+import { HttpHeaders } from "@angular/common/http";
 
 @Component({
   selector: "app-events",
@@ -8,6 +9,10 @@ import { FormGroup, FormControl, Validators } from "@angular/forms";
   styleUrls: ["./events.component.css"]
 })
 export class EventsComponent implements OnInit {
+  //Closing Dailog
+  @ViewChild("closeBtn") closeBtn: ElementRef;
+  @ViewChild("datatable") datatable: ElementRef;
+
   data = [];
 
   eventForm: FormGroup;
@@ -30,15 +35,17 @@ export class EventsComponent implements OnInit {
 
   getEvents() {
     let arr = new Array();
-    const header = {
-      "Content-Type": "application/json",
-      Authorization: "Bearer " + localStorage.getItem("token")
-    };
+    let headers: HttpHeaders = new HttpHeaders();
+    headers = headers.append("Accept", "application/json");
+    headers = headers.append(
+      "Authorization",
+      "Bearer " + localStorage.getItem("token")
+    );
 
     const body = {
       query: "query{events{_id title description price date}}"
     };
-    this.service.getEvents(body, header).subscribe(events => {
+    this.service.getEvents(body, headers).subscribe(events => {
       arr.push(events);
 
       this.data = arr[0].data.events;
@@ -64,6 +71,18 @@ export class EventsComponent implements OnInit {
 
     this.service.createEvent(body, header).subscribe(event => {
       console.log(event);
+      alert("Successfully Added");
+      this.data.push(event);
+      this.closeModal();
+      this.datatable.nativeElement.refesh();
     });
+  }
+
+  private closeModal(): void {
+    this.closeBtn.nativeElement.click();
+  }
+
+  refreshTable() {
+    this.datatable.nativeElement.refesh();
   }
 }
