@@ -1,31 +1,38 @@
-import { Component, OnInit, Input, ViewChild, ElementRef } from "@angular/core";
-import { ProjectService } from "src/app/Service/project.service";
-import { FormGroup, FormControl, Validators } from "@angular/forms";
-import { HttpHeaders } from "@angular/common/http";
+import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
+import { ProjectService } from 'src/app/Service/project.service';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { HttpHeaders } from '@angular/common/http';
+import { NavbarService } from 'src/app/Service/navbar.service';
+import { Router } from '@angular/router';
 
 @Component({
-  selector: "app-events",
-  templateUrl: "./events.component.html",
-  styleUrls: ["./events.component.css"]
+  selector: 'app-events',
+  templateUrl: './events.component.html',
+  styleUrls: ['./events.component.css']
 })
 export class EventsComponent implements OnInit {
-  //Closing Dailog
-  @ViewChild("closeBtn") closeBtn: ElementRef;
-  @ViewChild("datatable") datatable: ElementRef;
+  // Closing Dailog
+  @ViewChild('closeBtn') closeBtn: ElementRef;
+  @ViewChild('datatable') datatable: ElementRef;
 
   data = [];
 
   eventForm: FormGroup;
 
-  constructor(private service: ProjectService) {}
+  constructor(
+    private service: ProjectService,
+    private navbar: NavbarService,
+    private router: Router
+  ) {}
 
   ngOnInit() {
     this.eventForm = new FormGroup({
-      title: new FormControl("", [Validators.required]),
-      description: new FormControl("", [Validators.required]),
-      price: new FormControl("", [Validators.required]),
-      datetime: new FormControl("", [Validators.required])
+      title: new FormControl('', [Validators.required]),
+      description: new FormControl('', [Validators.required]),
+      price: new FormControl('', [Validators.required]),
+      datetime: new FormControl('', [Validators.required])
     });
+    this.navbar.updateLoginStatus(true);
     this.getEvents();
   }
 
@@ -34,16 +41,16 @@ export class EventsComponent implements OnInit {
   }
 
   getEvents() {
-    let arr = new Array();
+    const arr = new Array();
     let headers: HttpHeaders = new HttpHeaders();
-    headers = headers.append("Accept", "application/json");
+    headers = headers.append('Accept', 'application/json');
     headers = headers.append(
-      "Authorization",
-      "Bearer " + localStorage.getItem("token")
+      'Authorization',
+      'Bearer ' + localStorage.getItem('token')
     );
 
     const body = {
-      query: "query{events{_id title description price date}}"
+      query: 'query{events{_id title description price date}}'
     };
     this.service.getEvents(body, headers).subscribe(events => {
       arr.push(events);
@@ -54,11 +61,11 @@ export class EventsComponent implements OnInit {
   }
 
   onSubmit() {
-    let mydate = new Date(this.eventForm.value.datetime).toDateString();
+    const mydate = new Date(this.eventForm.value.datetime).toDateString();
 
     const header = {
-      "Content-Type": "application/json",
-      Authorization: "Bearer " + localStorage.getItem("token")
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + localStorage.getItem('token')
     };
 
     const body = {
@@ -71,10 +78,10 @@ export class EventsComponent implements OnInit {
 
     this.service.createEvent(body, header).subscribe(event => {
       console.log(event);
-      alert("Successfully Added");
+      alert('Successfully Added');
       this.data.push(event);
       this.closeModal();
-      this.datatable.nativeElement.refesh();
+      this.ngOnInit();
     });
   }
 
@@ -84,5 +91,19 @@ export class EventsComponent implements OnInit {
 
   refreshTable() {
     this.datatable.nativeElement.refesh();
+  }
+
+  OnChanges() {}
+
+  ngDoCheck() {}
+
+  ngAfterViewInit() {}
+
+  navigateToBookings() {
+    this.router.navigate(['/bookings']);
+  }
+
+  deleteEvent(id) {
+    console.log(id);
   }
 }

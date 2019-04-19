@@ -1,15 +1,15 @@
-import { Component, OnInit } from "@angular/core";
-import { FormGroup, FormControl, Validators } from "@angular/forms";
-import { ProjectService } from "src/app/Service/project.service";
-import { AuthService } from "src/app/Service/auth.service";
+import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { ProjectService } from 'src/app/Service/project.service';
+import { AuthService } from 'src/app/Service/auth.service';
 
 @Component({
-  selector: "app-auth",
-  templateUrl: "./auth.component.html",
-  styleUrls: ["./auth.component.css"]
+  selector: 'app-auth',
+  templateUrl: './auth.component.html',
+  styleUrls: ['./auth.component.css']
 })
 export class AuthComponent implements OnInit {
-  switch_to = "Login";
+  switch_to = 'Login';
   profileForm: FormGroup;
 
   authData: any;
@@ -21,8 +21,8 @@ export class AuthComponent implements OnInit {
 
   ngOnInit() {
     this.profileForm = new FormGroup({
-      userid: new FormControl("", [Validators.required]),
-      password: new FormControl("", [Validators.required])
+      userid: new FormControl('', [Validators.required]),
+      password: new FormControl('', [Validators.required])
     });
   }
 
@@ -40,13 +40,14 @@ export class AuthComponent implements OnInit {
     });
   }
 
-  // toggleButton(param) {
-  //   if (param == "Login") {
-  //     this.switch_to = "Register";
-  //   } else if (param == "Register") {
-  //     this.switch_to = "Login";
-  //   } else {
-  //     this.switch_to = "Munchurian";
-  //   }
-  // }
+  toggleButton(param) {
+    //   if (param == "Login") {
+    //     this.switch_to = "Register";
+    //   } else if (param == "Register") {
+    //     this.switch_to = "Login";
+    //   } else {
+    //     this.switch_to = "Munchurian";
+    //   }
+    // }
+  }
 }

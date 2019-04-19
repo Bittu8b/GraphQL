@@ -12,14 +12,22 @@
     <span class="navbar-toggler-icon"></span>
   </button>
 
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+  <div
+    *ngIf="isLoggedIn"
+    class="collapse navbar-collapse"
+    id="navbarSupportedContent"
+  >
     <ul class="navbar-nav mr-auto">
       <ul class="nav navbar-nav" routerLinkActive="active">
-        <li class="nav-item" *ngFor="let link of links">
-          <a class="nav-link" [routerLink]="link.path">{{ link.text }}</a>
+        <li class="nav-item">
+          <a class="nav-link" routerLinkActive="active" routerLink="/events"
+            >Events</a
+          >
         </li>
-        <li class="nav-item" *ngIf="isLoggedIn">
-          <a class="nav-link" routerLink="logout" (click)="logout()">Logout</a>
+        <li class="nav-item">
+          <a class="nav-link" routerLinkActive="active" routerLink="/bookings"
+            >Bookings</a
+          >
         </li>
       </ul>
     </ul>
@@ -27,14 +35,13 @@
     <button
       class="btn btn-outline-success my-2 my-sm-0"
       type="submit"
-      *ngIf="isAuth"
+      *ngIf="isLoggedIn"
       (click)="logout()"
     >
-      Logout
+      <span>Logout</span>
     </button>
   </div>
 </nav>
-
-<h1>{{ name }}</h1>
+<span class="oi oi-trash"></span>
 
 <router-outlet></router-outlet>

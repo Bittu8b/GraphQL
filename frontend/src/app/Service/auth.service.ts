@@ -1,5 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
+import { NavbarService } from "./navbar.service";
 
 @Injectable({
   providedIn: "root"
@@ -7,7 +8,7 @@ import { Router } from "@angular/router";
 export class AuthService {
   isLoggedIn = false;
 
-  constructor(private _router: Router) {}
+  constructor(private _router: Router, private navService: NavbarService) {}
 
   clear(): void {
     localStorage.clear();

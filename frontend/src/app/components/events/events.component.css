@@ -14,6 +14,7 @@
 .table-hover {
   cursor: pointer;
 }
+
 .container {
   margin-left: 2%;
   width: 100%;
@@ -21,4 +22,90 @@
 
 .col-sm {
   width: 70%;
+}
+
+.card {
+  width: 80%;
+  margin: auto
+}
+
+.table-header {
+  height: 50px;
+  width: 100%;
+  background-color: rgb(83, 83, 83);
+
+}
+
+.add-event {
+  margin-top: 10px
+}
+
+mat-card-title {
+  text-align: center;
+}
+
+a.active {
+  background-color: green
+}
+
+
+
+
+
+
+
+.col-md-11 {
+  background-color: #2f2f30;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 0.5em;
+  color: white
+}
+
+.col-md-5 {
+  background-color: #2f2f30;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 0.5em;
+  color: white
+}
+
+.row {
+  background-color: #171819;
+  margin-top: 0.5em;
+}
+
+#chartContainer {
+  background-color: #2f2f30
+}
+
+table {
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+.margin-d {
+  margin-bottom: 20px;
+}
+
+mat-toolbar {
+  height: 40px;
+  color: white;
+  background-color: black;
+  margin-top: 10px;
+
+}
+
+.status-size {
+  width: 50%;
+  height: 40px;
+  color: white
+}
+
+.modal-header-custom {
+  height: 50px;
+  background-color: #171819;
+  color: white
 }

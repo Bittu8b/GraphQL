@@ -6,3 +6,8 @@ a.active {
 a:hover {
   background-color: rgba(219, 83, 110, 0.8);
 }
+
+hr {
+  height: 20px;
+  background-color: cadetblue;
+}
